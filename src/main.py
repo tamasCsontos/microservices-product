@@ -40,6 +40,9 @@ def list_one(id):
 
 def build_json(data):
     dikt = {}
+    page = {}
+    counter = 0
+    page = 1
 
     # dikt = list(map(lambda r: {r.id: r}, data))
     for adat in data:
@@ -48,7 +51,14 @@ def build_json(data):
         temp['price'] = adat.price
         temp['descr'] = adat.description
         temp['user_id'] = adat.user_id
+        temp['on_page'] = page
         dikt[adat.id] = temp
+        counter += 1
+
+        if counter % 10 == 0:
+            page += 1
+
+
     print(dikt)
     return json.dumps(dikt)
 
@@ -59,6 +69,10 @@ def get_one_product(id):
     list.append(query)
     return list
 
+def get_product_on_page():
+    session = Session()
+    list = []
+    query = session.query(Product.Product).get()
 
 if __name__ == "__main__":
     app.secret_key ='KEcskE'
