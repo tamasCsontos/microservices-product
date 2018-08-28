@@ -1,11 +1,8 @@
 import json
 
 from flask import Flask
-
 from com.codecool.oop import Product
-from com.codecool.oop import Other
 from sqlalchemy.orm import sessionmaker
-
 from database import engine
 
 app = Flask(__name__)
@@ -21,6 +18,7 @@ def add_product(product):
     except Exception as e:
         print(e)
         session.rollback()
+
 
 def get_all_product():
     session = Session()
@@ -50,9 +48,9 @@ def build_json(data):
         if counter % 10 == 0:
             page += 1
 
-
     print(dikt)
     return json.dumps(dikt)
+
 
 def build_json_from_list(data):
     id = 0
@@ -82,10 +80,12 @@ def get_one_product(id):
     list.append(query)
     return list
 
+
 def get_product_on_page():
     session = Session()
     list = []
     query = session.query(Product.Product).get()
+
 
 def get_prod_by_user(id):
     session = Session()
@@ -103,10 +103,12 @@ def list():
     data = get_all_product()
     return build_json(data)
 
+
 @app.route("/product/<id>")
 def list_one(id):
     data = get_one_product(id)
     return build_json(data)
+
 
 @app.route("/product/user/<id>")
 def get_product_by_user(id):
