@@ -37,50 +37,61 @@ def build_json(data):
     page = 1
 
     # dikt = list(map(lambda r: {r.id: r}, data))
-    for adat in data:
-        temp = {}
-        temp['name'] = adat.name
-        temp['price'] = adat.price
-        temp['descr'] = adat.description
-        temp['user_id'] = adat.user_id
-        if len(data) >=10:
-            temp['on_page'] = page
-        dikt[adat.id] = temp
-        counter += 1
+    if len(data) != 0:
+        for adat in data:
+            temp = {}
+            temp['name'] = adat.name
+            temp['price'] = adat.price
+            temp['descr'] = adat.description
+            temp['user_id'] = adat.user_id
+            temp['is_incart'] = adat.is_incart
+            if len(data) >=10:
+                temp['on_page'] = page
+            dikt[adat.id] = temp
+            counter += 1
 
-        if counter % 10 == 0:
-            page += 1
+            if counter % 10 == 0:
+                page += 1
 
 
-    print(dikt)
-    return json.dumps(dikt)
+        print(dikt)
+        return json.dumps(dikt)
+    else:
+        return json.dumps({'Not Found': True})
 
 def build_json_from_list(data):
-    id = 0
-    name = 1
-    price = 2
-    descr = 3
-    user_id = 4
 
-    dikt = {}
+    if len(data) != 0:
+        id = 0
+        name = 1
+        price = 2
+        descr = 3
+        user_id = 4
+        is_incart = 5
 
-    for adat in data:
-        temp = {}
-        temp['name'] = adat[name]
-        temp['price'] = adat[price]
-        temp['descr'] = adat[descr]
-        temp['user_id'] = adat[user_id]
+        dikt = {}
 
-        dikt[str(adat[id])] = temp
+        for adat in data:
+            temp = {}
+            temp['name'] = adat[name]
+            temp['price'] = adat[price]
+            temp['descr'] = adat[descr]
+            temp['user_id'] = adat[user_id]
+            temp['is_incart'] = adat[is_incart]
 
-    return json.dumps(dikt)
+            dikt[str(adat[id])] = temp
+
+        return json.dumps(dikt)
+    else:
+        return json.dumps({'Not Found': True})
 
 
 def get_one_product(id):
     session = Session()
     list = []
     query = session.query(Product.Product).get(id)
-    list.append(query)
+    if query != None:
+        list.append(query)
     return list
 
 def get_product_on_page():
