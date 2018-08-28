@@ -1,6 +1,7 @@
 import json
 
 from flask import Flask
+from flask import request
 
 from com.codecool.oop import Product
 from com.codecool.oop import Other
@@ -98,15 +99,21 @@ def get_prod_by_user(id):
     return query
 
 
-@app.route("/product")
+@app.route("/product", methods=['POST', 'GET'])
 def list():
-    data = get_all_product()
-    return build_json(data)
+    if request.method == 'GET':
+        data = get_all_product()
+        return build_json(data)
+    elif request.method == 'POST':
+        new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], request.form['descr'])
+        add_product(new_product)
+        return 'OK'
 
-@app.route("/product/<id>")
+@app.route("/product/<id>", methods=['GET'])
 def list_one(id):
-    data = get_one_product(id)
-    return build_json(data)
+    if request.method == 'GET':
+        data = get_one_product(id)
+        return build_json(data)
 
 @app.route("/product/user/<id>")
 def get_product_by_user(id):
