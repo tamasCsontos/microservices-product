@@ -21,6 +21,15 @@ def add_product(product):
         session.rollback()
 
 
+def delete_product(product):
+    session = Session()
+    try:
+        session.delete(product)
+        session.commit()
+    except Exception as e:
+        print(e)
+        session.rollback()
+
 def get_all_product():
     session = Session()
     query = session.query(Product.Product).all()
@@ -91,6 +100,7 @@ def get_one_product(id):
     query = session.query(Product.Product).get(id)
     if query != None:
         list.append(query)
+        session.close()
     return list
 
 
@@ -120,6 +130,16 @@ def list():
         new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], request.form['descr'])
         add_product(new_product)
         return 'OK'
+
+
+@app.route("/product/<id>", methods=['DELETE'])
+def remove_product(id):
+    try:
+        product = get_one_product(id)
+        delete_product(product[0])
+        return 'OK'
+    except IndexError:
+        return Response(status=418)
 
 
 @app.route("/product/<id>", methods=['GET'])
