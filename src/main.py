@@ -1,6 +1,5 @@
 import json
 
-
 from flask import Flask, request, Response
 from com.codecool.oop import Product
 from sqlalchemy.orm import sessionmaker
@@ -29,6 +28,7 @@ def delete_product(product):
     except Exception as e:
         print(e)
         session.rollback()
+
 
 def get_all_product():
     session = Session()
@@ -142,6 +142,21 @@ def remove_product(id):
         return Response(status=418)
 
 
+@app.route("/product/<id>", methods=['PUT'])
+def modify_product(id):
+    new_data = request.form.to_dict()
+    session = Session()
+    try:
+        session.query(Product.Product)\
+            .filter(Product.Product.id == id)\
+            .update(new_data)
+        session.commit()
+        return 'OK'
+    except Exception as e:
+        print(e)
+        session.rollback()
+
+
 @app.route("/product/<id>", methods=['GET'])
 def list_one(id):
     if request.method == 'GET':
@@ -157,9 +172,8 @@ def get_product_by_user(id):
 
 
 if __name__ == "__main__":
-
-     app.secret_key ='KEcskE'
-     app.run(
+    app.secret_key ='KEcskE'
+    app.run(
          port=50098,
          debug=True
      )
