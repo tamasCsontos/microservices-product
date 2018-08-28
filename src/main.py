@@ -1,7 +1,6 @@
 import json
 
-from flask import Flask
-from flask import request
+from flask import Flask, request, Response
 
 from com.codecool.oop import Product
 from com.codecool.oop import Other
@@ -57,7 +56,7 @@ def build_json(data):
         print(dikt)
         return json.dumps(dikt)
     else:
-        return json.dumps({'Not Found': True})
+        return Response(status=418)
 
 def build_json_from_list(data):
 
@@ -83,7 +82,7 @@ def build_json_from_list(data):
 
         return json.dumps(dikt)
     else:
-        return json.dumps({'Not Found': True})
+        return Response(status=418)
 
 
 def get_one_product(id):
