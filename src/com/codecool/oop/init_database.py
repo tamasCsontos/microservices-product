@@ -16,12 +16,14 @@ class Prod(Base):
     price = Column(Float, nullable=False)
     description = Column(String(255), nullable=True)
     user_id = Column(Integer, nullable=False)
+    is_incart = Column(Boolean, nullable=False)
 
     def __init__(self, name, price, user_id, description=None):
         self.name = name
         self.price = price
         self.user_id = user_id
         self.description = description
+        self.is_incart = False
 
 
 user_name = os.environ.get('PSQL_USER_NAME')
@@ -32,9 +34,9 @@ engine = create_engine("postgresql://{user_name}:{password}@localhost:5432/shitw
             ))
 Base.metadata.create_all(engine)
 
-product = Product.Product('Pulcsi', 10, 1, 'Nagymama kötötte pulcsi.')
+product = Product.Product('Pullover', 10, 1, "It's a clothing.")
 add_product(product)
-product2 = Product.Product('Szék', 50, 1, 'Ülni lehet rajta.')
+product2 = Product.Product('Chair', 50, 1, 'You can sit on it')
 add_product(product2)
-product3 = Product.Product('Jojo', 5, 1)
+product3 = Product.Product('Jojo', 5, 2)
 add_product(product3)
