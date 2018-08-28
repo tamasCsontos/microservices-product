@@ -51,7 +51,8 @@ def build_json(data):
         temp['price'] = adat.price
         temp['descr'] = adat.description
         temp['user_id'] = adat.user_id
-        temp['on_page'] = page
+        if len(data) >=10:
+            temp['on_page'] = page
         dikt[adat.id] = temp
         counter += 1
 
