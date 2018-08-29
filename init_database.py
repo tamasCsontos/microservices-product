@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
-from com.codecool.oop import Product
+import Product
 from main import add_product
 
 Base = declarative_base()

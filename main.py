@@ -1,9 +1,9 @@
 import json
 
 from flask import Flask, request, Response
-from com.codecool.oop import Product
+import Product
 from sqlalchemy.orm import sessionmaker
-from database import engine
+import database
 
 app = Flask(__name__)
 
