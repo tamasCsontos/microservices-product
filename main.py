@@ -181,8 +181,9 @@ def get_product_by_user(id):
     return build_json_from_list(data)
 
 
+app.secret_key ='KEcskE'
+
 if __name__ == "__main__":
-    app.secret_key ='KEcskE'
     app.run(
          port=50098,
          debug=True
