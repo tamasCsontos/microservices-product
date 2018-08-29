@@ -39,7 +39,6 @@ def get_all_product():
 
 def build_json(data):
     dikt = {}
-    page = {}
     counter = 0
     page = 1
 
@@ -62,7 +61,6 @@ def build_json(data):
             if counter % 10 == 0:
                 page += 1
 
-
         print(dikt)
         return json.dumps(dikt)
     else:
@@ -70,7 +68,6 @@ def build_json(data):
 
 
 def build_json_from_list(data):
-
     if len(data) != 0:
         id = 0
         name = 1
