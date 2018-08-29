@@ -50,8 +50,10 @@ def build_json(data):
             temp['name'] = adat.name
             temp['price'] = adat.price
             temp['descr'] = adat.description
+            temp['img'] = adat.img
             temp['user_id'] = adat.user_id
             temp['is_incart'] = adat.is_incart
+            temp['is_active'] = adat.is_active
             if len(data) >=10:
                 temp['on_page'] = page
             dikt[adat.id] = temp
@@ -76,6 +78,8 @@ def build_json_from_list(data):
         descr = 3
         user_id = 4
         is_incart = 5
+        img = 6
+        is_active = 7
 
         dikt = {}
 
@@ -84,8 +88,10 @@ def build_json_from_list(data):
             temp['name'] = adat[name]
             temp['price'] = adat[price]
             temp['descr'] = adat[descr]
+            temp['img'] = adat[img]
             temp['user_id'] = adat[user_id]
             temp['is_incart'] = adat[is_incart]
+            temp['is_active'] = adat[is_active]
 
             dikt[str(adat[id])] = temp
 
@@ -127,7 +133,7 @@ def list():
         data = get_all_product()
         return build_json(data)
     elif request.method == 'POST':
-        new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], request.form['descr'])
+        new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], request.form['descr'], request.form['img'])
         add_product(new_product)
         return 'OK'
 
@@ -145,13 +151,20 @@ def remove_product(id):
 @app.route("/product/<id>", methods=['PUT'])
 def modify_product(id):
     new_data = request.form.to_dict()
+    if "is_incart" in new_data:
+        new_data['is_incart'] = bool(new_data['is_incart'])
+    if "is_active" in new_data:
+        new_data['is_active'] = bool(new_data['is_active'])
     session = Session()
     try:
-        session.query(Product.Product)\
+        modified = session.query(Product.Product)\
             .filter(Product.Product.id == id)\
             .update(new_data)
-        session.commit()
-        return 'OK'
+        if modified == 0:
+            return Response(status=418)
+        elif modified == 1:
+            session.commit()
+            return 'OK'
     except Exception as e:
         print(e)
         session.rollback()
