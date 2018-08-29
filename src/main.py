@@ -151,6 +151,10 @@ def remove_product(id):
 @app.route("/product/<id>", methods=['PUT'])
 def modify_product(id):
     new_data = request.form.to_dict()
+    if "is_incart" in new_data:
+        new_data['is_incart'] = bool(new_data['is_incart'])
+    if "is_active" in new_data:
+        new_data['is_active'] = bool(new_data['is_active'])
     session = Session()
     try:
         modified = session.query(Product.Product)\

@@ -38,9 +38,9 @@ engine = create_engine("postgresql://{user_name}:{password}@localhost:5432/shitw
             ))
 Base.metadata.create_all(engine)
 
-product = Product.Product('Pullover', 10, 1, "It's a clothing.", "https://imgur.com/a/5gU8F3Q")
+product = Product.Product('Pullover', 10, 1, "https://imgur.com/a/5gU8F3Q", "It's a clothing.")
 add_product(product)
-product2 = Product.Product('Chair', 50, 1, 'You can sit on it', "https://imgur.com/a/ehFULsF")
+product2 = Product.Product('Chair', 50, 1, "https://imgur.com/a/ehFULsF", 'You can sit on it')
 add_product(product2)
 product3 = Product.Product('Jojo', 5, 2)
 add_product(product3)
