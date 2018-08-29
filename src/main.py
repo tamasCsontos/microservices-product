@@ -130,7 +130,16 @@ def list():
         data = get_all_product()
         return build_json(data)
     elif request.method == 'POST':
-        new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], request.form['descr'], request.form['img'])
+        if "img" in request.form and "descr" in request.form:
+            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'],
+                                          request.form['img'], request.form['descr'])
+        elif "descr" in request.form:
+            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], "https://i.imgur.com/jNikxeh.png",
+                                          request.form['descr'])
+        elif "img" in request.form:
+            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'], request.form['img'])
+        else:
+            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'])
         add_product(new_product)
         return 'OK'
 
