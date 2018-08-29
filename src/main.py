@@ -147,11 +147,14 @@ def modify_product(id):
     new_data = request.form.to_dict()
     session = Session()
     try:
-        session.query(Product.Product)\
+        modified = session.query(Product.Product)\
             .filter(Product.Product.id == id)\
             .update(new_data)
-        session.commit()
-        return 'OK'
+        if modified == 0:
+            return Response(status=418)
+        elif modified == 1:
+            session.commit()
+            return 'OK'
     except Exception as e:
         print(e)
         session.rollback()
