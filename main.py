@@ -138,7 +138,7 @@ def list():
         else:
             new_product = Product.Product(request.json['name'], request.json['price'], request.json['user_id'])
         add_product(new_product)
-        return redirect("/")
+        return "OK"
 
 
 @app.route("/product/<id>", methods=['DELETE'])
