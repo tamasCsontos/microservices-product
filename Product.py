@@ -15,7 +15,7 @@ class Product(db.Model):
     img = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, name, price, user_id, img="https://imgur.com/a/C94poxI", description="Description is not available"):
+    def __init__(self, name, price, user_id, img="https://i.imgur.com/jNikxeh.png", description="Description is not available"):
         self.name = name
         self.price = price
         self.user_id = user_id
