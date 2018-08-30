@@ -14,13 +14,13 @@ class Prod(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
     price = Column(Float, nullable=False)
-    description = Column(String(255), nullable=True)
+    description = Column(String(255), nullable=False)
     user_id = Column(Integer, nullable=False)
     is_incart = Column(Boolean, nullable=False)
     img = Column(String(255), nullable=False)
     is_active = Column(Boolean, nullable=False)
 
-    def __init__(self, name, price, user_id, img="https://i.imgur.com/jNikxeh.png", description=None):
+    def __init__(self, name, price, user_id, img="https://i.imgur.com/jNikxeh.png", description="No Description Available"):
         self.name = name
         self.price = price
         self.user_id = user_id
