@@ -124,6 +124,7 @@ def list():
         data = get_all_product()
         return build_json(data)
     elif request.method == 'POST':
+        print(request.get_json())
         if "img" in request.get_json() and "descr" in request.get_json():
             new_product = Product.Product(request.json['name'], request.json['price'], request.json['user_id'],
                                           request.json['img'], request.json['descr'])
