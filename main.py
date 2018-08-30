@@ -1,7 +1,7 @@
 import json
 
 from create_app import application
-from flask import request, Response
+from flask import request, Response, redirect
 
 import Product
 
@@ -124,20 +124,20 @@ def list():
         data = get_all_product()
         return build_json(data)
     elif request.method == 'POST':
-        if "img" in request.form and "descr" in request.form:
-            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'],
-                                          request.form['img'], request.form['descr'])
-        elif "descr" in request.form:
-            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'],
+        if "img" in request.get_json() and "descr" in request.get_json():
+            new_product = Product.Product(request.json['name'], request.json['price'], request.json['user_id'],
+                                          request.json['img'], request.json['descr'])
+        elif "descr" in request.json:
+            new_product = Product.Product(request.json['name'], request.json['price'], request.json['user_id'],
                                           "https://i.imgur.com/jNikxeh.png",
-                                          request.form['descr'])
-        elif "img" in request.form:
-            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'],
-                                          request.form['img'])
+                                          request.json['descr'])
+        elif "img" in request.json:
+            new_product = Product.Product(request.json['name'], request.json['price'], request.json['user_id'],
+                                          request.json['img'])
         else:
-            new_product = Product.Product(request.form['name'], request.form['price'], request.form['user_id'])
+            new_product = Product.Product(request.json['name'], request.json['price'], request.json['user_id'])
         add_product(new_product)
-        return 'OK'
+        return redirect("/")
 
 
 @app.route("/product/<id>", methods=['DELETE'])
