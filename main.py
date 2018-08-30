@@ -1,17 +1,16 @@
 import json
 
-from flask import Flask, request, Response
+from create_app import application
+from flask import request, Response
+
 import Product
-from sqlalchemy.orm import sessionmaker
-import database
 
-app = Flask(__name__)
 
-Session = sessionmaker(bind=engine)
+app = application.app
+session = application.db.session
 
 
 def add_product(product):
-    session = Session()
     try:
         session.add(product)
         session.commit()
@@ -21,7 +20,6 @@ def add_product(product):
 
 
 def delete_product(product):
-    session = Session()
     try:
         session.delete(product)
         session.commit()
@@ -31,7 +29,6 @@ def delete_product(product):
 
 
 def get_all_product():
-    session = Session()
     query = session.query(Product.Product).all()
 
     return query
@@ -98,7 +95,6 @@ def build_json_from_list(data):
 
 
 def get_one_product(id):
-    session = Session()
     list = []
     query = session.query(Product.Product).get(id)
     if query != None:
@@ -108,13 +104,11 @@ def get_one_product(id):
 
 
 def get_product_on_page():
-    session = Session()
     list = []
     query = session.query(Product.Product).get()
 
 
 def get_prod_by_user(id):
-    session = Session()
     query = session.execute(
                     "SELECT * FROM product"
                     " WHERE product.user_id=:param",
@@ -152,7 +146,6 @@ def modify_product(id):
         new_data['is_incart'] = bool(new_data['is_incart'])
     if "is_active" in new_data:
         new_data['is_active'] = bool(new_data['is_active'])
-    session = Session()
     try:
         modified = session.query(Product.Product)\
             .filter(Product.Product.id == id)\
@@ -183,7 +176,9 @@ def get_product_by_user(id):
 
 app.secret_key ='KEcskE'
 
+print('BBBBBBBB')
 if __name__ == "__main__":
+    print('AAAAAAAA')
     app.run(
          port=50098,
          debug=True
